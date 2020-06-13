@@ -1,4 +1,6 @@
+const cfg = require("../config.json");
 const Discord = require('discord.js');
+const key = process.env.YT_API;
 const fs = require("fs");
 const moment = require("moment");
 const yt = require("ytdl-core");
@@ -7,7 +9,7 @@ const youtube = new YouTube(key);
 const opus = require("opusscript");
 const gyp = require("node-gyp");
 
-exports.run = async(music, message, args, color, queue) => {
+exports.run = async(client, message, args, color, queue) => {
   const args1 = message.content.split(' ');
   const searchString = args1.slice(1).join(' ');
   const url = args1[1] ? args1[1].replace(/<(.+)>/g, '$1') : '';
@@ -74,7 +76,6 @@ const voiceChannel = message.member.voiceChannel;
       return handleVideo(video, message, voiceChannel);
     }
 
-    // Time for the functions
 
 async function handleVideo(video, message, voiceChannel, playlist = false) {
   const serverQueue = queue.get(message.guild.id);
@@ -149,8 +150,6 @@ const dispatcher = serverQueue.connection.playStream(yt(song.url))
         .on('error', error => console.error(error));
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 100);
 
-    //Modified playing messages that give you the song duration!
-
     let durations = song.durations - 1
   var secondslength = Math.log(durations) * Math.LOG10E + 1 | 0;
   var mlength = Math.log(song.durationm) * Math.LOG10E + 1 | 0;
@@ -171,8 +170,6 @@ const dispatcher = serverQueue.connection.playStream(yt(song.url))
          .addField("🙌 | Server Dukungan", `[\`Klik Disini\`](https://discord.gg/n7n8NgQ)`, true)
          .setImage('https://www.gambaranimasi.org/data/media/562/animasi-bergerak-garis-0170.gif')
 
-
-        
 
 .setColor("#5c6a7a");
 
@@ -281,8 +278,6 @@ const dispatcher = serverQueue.connection.playStream(yt(song.url))
       return serverQueue.textChannel.send(embed8);
     }
 }
-} // I had this setup somewhere else so if u see me paste something in that's why
+} 
 
-exports.help = {
-    name: "play"
 }
