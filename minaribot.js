@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const active = new Map();
+const queue = new Map();
 const pingFrequency = (30 * 1000);
 const waitingTime = (10 * 1000);
 const fs = require('fs');
@@ -23,6 +23,7 @@ client.on('message', message => {
 
 	if(message.author.bot) return;
 	if(!message.content.startsWith(prefix)) return;
+        if (sender.bot) return;
 
 	try {
 		let ops = {
@@ -30,7 +31,7 @@ client.on('message', message => {
             active: active
 		}
 		let commandFile = require(`./commands/${cmd}.js`);
-		commandFile.run(client, message, args, ops);
+		commandFile.run(client, message, args, ops, queue);
 	} catch (e) {
 		console.log(`${message.author.tag} issued command '${prefix}${cmd}', but it doesn't exist`);
 		message.reply(`Unknown command. Try __${prefix}help__ for a list of commands.`);
